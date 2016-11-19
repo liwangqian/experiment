@@ -1,4 +1,14 @@
 module ("utility", package.seeall)
+local global_env = _G
+
+function export_module(mod, module_name)
+	global_env[module_name] = mod
+	package.loaded[module_name] = mod
+end
+
+function export_api(callable, name)
+	global_env[name] = callable
+end
 
 --[[
 	向mod模块中增加动态绑定功能
@@ -32,11 +42,37 @@ function add_dynamic_binding(mod, module_name)
 	})
 end
 
-function export_module(mod, module_name)
-	_G[module_name] = mod
-	package.loaded[module_name] = mod
+function get_global_env( name )
+	if name then
+		return global_env[name]
+	else
+		return global_env
+	end
 end
 
-function export_api(callable, name)
-	_G[name] = callable
+local function external_module( name )
+	if global_env[name] then
+		assert(type(global_env[name]) == 'table', string.format("module %s conflicted with existing one", name))
+		return global_env[name]
+	end
+
+	local ext_mod = {}
+	add_dynamic_binding(ext_mod, name)
+	export_module(ext_mod, name)
+
+	return ext_mod
 end
+
+local orig_require = global_env['require']
+local function safe_require( ... )
+	local ret, mod = pcall(orig_require, ...)
+	if ret then
+		return mod or ret
+	else
+		return ret, mod
+	end
+end
+
+-- 将接口导出到公共环境变量中，方便使用
+export_api(external_module, 'external_module')
+export_api(safe_require, 'safe_require')
