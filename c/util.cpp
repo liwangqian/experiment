@@ -72,6 +72,8 @@ tokenizer::word tokenizer::next(const char delim)
 	const char* end = _content + _size;
 	word aword = invalid_word;
 
+    strip(delim); // skip the delimiters
+
 	if ( _pc == end )
 	{
 		return aword;
@@ -91,7 +93,13 @@ tokenizer::word tokenizer::next(const char delim)
 
 	aword.second = _pc;
 
-	while ( _pc != end )
+	return aword;
+}
+
+void tokenizer::strip(const char delim)
+{
+    const char* end = _content + _size;
+    while ( _pc != end )
 	{
 		if ( *_pc != delim )
         {
@@ -100,8 +108,6 @@ tokenizer::word tokenizer::next(const char delim)
 
         ++_pc; //skip the delimiter.
 	}
-
-	return aword;
 }
 
 

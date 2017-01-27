@@ -24,6 +24,24 @@ public:
 	word next(const Delimiter& delim);
 
 private:
+    void strip(const char delim);
+
+    template<typename Delimiter>
+    void strip(const Delimiter& delim)
+    {
+        const char* end = _content + _size;
+        while ( _pc != end )
+        {
+            if ( !delim(*_pc) )
+            {
+                break;
+            }
+
+            ++_pc; //skip the delimiter.
+        }
+    }
+
+private:
 	const char* _content;
 	const char* _pc;
 	std::size_t _size;
@@ -60,6 +78,8 @@ tokenizer::word tokenizer::next(const Delimiter& delim)
 	const char* end = _content + _size;
 	word aword = invalid_word;
 
+    strip(delim);
+
 	if ( _pc == end )
 	{
 		return aword;
@@ -78,15 +98,6 @@ tokenizer::word tokenizer::next(const Delimiter& delim)
 	}
 
 	aword.second = _pc;
-	while ( _pc != end )
-	{
-		if ( !delim(*_pc) )
-        {
-            break;
-        }
-
-        ++_pc; //skip the delimiter.
-	}
 
 	return aword;
 }
