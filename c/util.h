@@ -10,18 +10,18 @@ namespace snipts {
 class tokenizer
 {
 public:
-	typedef std::pair<const char*, const char*> word;
-	static const word invalid_word;
+    typedef std::pair<const char*, const char*> word;
+    static const word invalid_word;
 
 public:
-	~tokenizer();
-	tokenizer(const char* content = NULL, const bool copy = true);
+    ~tokenizer();
+    tokenizer(const char* content = NULL, const bool copy = true);
 
-	void reset(const char* content, const bool copy = true);
-	word next(const char delim = ' ');
+    void reset(const char* content, const bool copy = true);
+    word next(const char delim = ' ');
 
-	template<typename Delimiter>
-	word next(const Delimiter& delim);
+    template<typename Delimiter>
+    word next(const Delimiter& delim);
 
 private:
     void strip(const char delim);
@@ -42,25 +42,25 @@ private:
     }
 
 private:
-	const char* _content;
-	const char* _pc;
-	std::size_t _size;
-		  char* _inner_buffer;
+    const char* _content;
+    const char* _pc;
+    std::size_t _size;
+          char* _inner_buffer;
 };
 
 class delimiter
 {
 public:
-	~delimiter();
-	delimiter(const char* content = NULL, const bool copy = true);
+    ~delimiter();
+    delimiter(const char* content = NULL, const bool copy = true);
 
-	void reset(const char* content, const bool copy = true);
-	bool operator()(const char c) const;
+    void reset(const char* content, const bool copy = true);
+    bool operator()(const char c) const;
 
 private:
-	const char* _content;
-	std::size_t _size;
-		  char* _inner_buffer;
+    const char* _content;
+    std::size_t _size;
+          char* _inner_buffer;
 };
 
 
@@ -75,31 +75,31 @@ private:
 template<typename Delimiter>
 tokenizer::word tokenizer::next(const Delimiter& delim)
 {
-	const char* end = _content + _size;
-	word aword = invalid_word;
+    const char* end = _content + _size;
+    word aword = invalid_word;
 
     strip(delim);
 
-	if ( _pc == end )
-	{
-		return aword;
-	}
+    if ( _pc == end )
+    {
+        return aword;
+    }
 
-	aword.first = _pc;
+    aword.first = _pc;
 
-	while( _pc != end )
-	{
-		if ( delim(*_pc) )
-		{
-			break;
-		}
+    while( _pc != end )
+    {
+        if ( delim(*_pc) )
+        {
+            break;
+        }
 
-		++_pc;
-	}
+        ++_pc;
+    }
 
-	aword.second = _pc;
+    aword.second = _pc;
 
-	return aword;
+    return aword;
 }
 
 
