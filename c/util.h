@@ -41,6 +41,10 @@ private:
         }
     }
 
+    //disable copy/assign constructor
+    tokenizer(const tokenizer&);
+    tokenizer& operator=(const tokenizer&);
+
 private:
     const char* _content;
     const char* _pc;
@@ -57,6 +61,11 @@ public:
     void reset(const char* content, const bool copy = true);
     bool operator()(const char c) const;
 
+private:
+    //disable copy/assign constructor
+    delimiter(const delimiter&);
+    delimiter& operator=(const delimiter&);
+    
 private:
     const char* _content;
     std::size_t _size;
