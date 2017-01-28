@@ -31,7 +31,10 @@ public:
 
 public:
     ~Array() = default;
-    Array() = default;
+    Array()
+    {
+        fill(T(0));
+    }
 
     inline array_type& operator[](const std::size_t i)
     {
@@ -108,7 +111,10 @@ public:
 
 public:
     ~Array() = default;
-    Array() = default;
+    Array()
+    {
+        fill(T(0));
+    };
 
     inline value_type& operator[](const std::size_t i)
     {
@@ -182,7 +188,7 @@ OS& operator << (OS& os, const Array<T, D0, Dn...>& m)
         {
             os << "\nArray(" << i << ",:,:) = \n";
         }
-        os << std::setw(12) << m[i];
+        os << std::setw(15) << std::setprecision(6) << m[i];
     }
 
     return os;
@@ -195,7 +201,7 @@ OS& operator << (OS& os, const Array<T, D0, D1>& m)
     {
         for (std::size_t j = 0; j < m.size(2); ++j)
         {
-            os << std::setw(12) << m[i][j];
+            os << std::setw(15) << std::setprecision(6) << m[i][j];
         }
         os << "\n";
     }
