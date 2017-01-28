@@ -10,18 +10,18 @@ namespace snipts {
 class tokenizer
 {
 public:
-    typedef std::pair<const char*, const char*> word;
-    static const word invalid_word;
+    typedef std::pair<const char*, const char*> token;
+    static const token invalid_token;
 
 public:
     ~tokenizer();
     tokenizer(const char* content = NULL, const bool copy = true);
 
     void reset(const char* content, const bool copy = true);
-    word next(const char delim = ' ');
+    token next(const char delim = ' ');
 
     template<typename Delimiter>
-    word next(const Delimiter& delim);
+    token next(const Delimiter& delim);
 
 private:
     void strip(const char delim);
@@ -82,10 +82,10 @@ private:
  **/
 
 template<typename Delimiter>
-tokenizer::word tokenizer::next(const Delimiter& delim)
+tokenizer::token tokenizer::next(const Delimiter& delim)
 {
     const char* end = _content + _size;
-    word aword = invalid_word;
+    token aword = invalid_word;
 
     strip(delim);
 

@@ -12,7 +12,7 @@ namespace snipts {
  *
  **/
 
-const tokenizer::word tokenizer::invalid_word =
+const tokenizer::token tokenizer::invalid_token =
                 std::make_pair<const char*, const char*>(NULL, NULL);
 
 tokenizer::~tokenizer()
@@ -67,19 +67,19 @@ void tokenizer::reset(const char* content, const bool copy)
     _size   = len;
 }
 
-tokenizer::word tokenizer::next(const char delim)
+tokenizer::token tokenizer::next(const char delim)
 {
     const char* end = _content + _size;
-    word aword = invalid_word;
+    token atoken = invalid_token;
 
     strip(delim); // skip the delimiters
 
     if ( _pc == end )
     {
-        return aword;
+        return atoken;
     }
 
-    aword.first = _pc;
+    atoken.first = _pc;
 
     while( _pc != end )
     {
@@ -91,9 +91,9 @@ tokenizer::word tokenizer::next(const char delim)
         ++_pc;
     }
 
-    aword.second = _pc;
+    atoken.second = _pc;
 
-    return aword;
+    return atoken;
 }
 
 void tokenizer::strip(const char delim)
