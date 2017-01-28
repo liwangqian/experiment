@@ -85,16 +85,16 @@ template<typename Delimiter>
 tokenizer::token tokenizer::next(const Delimiter& delim)
 {
     const char* end = _content + _size;
-    token aword = invalid_word;
+    token atoken = invalid_token;
 
     strip(delim);
 
     if ( _pc == end )
     {
-        return aword;
+        return atoken;
     }
 
-    aword.first = _pc;
+    atoken.first = _pc;
 
     while( _pc != end )
     {
@@ -106,9 +106,9 @@ tokenizer::token tokenizer::next(const Delimiter& delim)
         ++_pc;
     }
 
-    aword.second = _pc;
+    atoken.second = _pc;
 
-    return aword;
+    return atoken;
 }
 
 
