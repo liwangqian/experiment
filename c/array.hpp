@@ -218,6 +218,12 @@ inline void eye(Array<T, N, N>& m)
     }
 }
 
+template <typename T, std::size_t D0, std::size_t...Dn>
+inline void ones(Array<T, D0, Dn...>& m)
+{
+    m.fill(T(1.0));
+}
+
 
 } //namespace snipts
 
