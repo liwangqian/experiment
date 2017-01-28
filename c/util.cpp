@@ -45,6 +45,12 @@ tokenizer::tokenizer(const char* content, const bool copy)
 
 void tokenizer::reset(const char* content, const bool copy)
 {
+    if ( content == NULL )
+    {
+        _pc = _content;
+        return;
+    }
+
     const std::size_t len = strlen(content);
 
     if ( copy )

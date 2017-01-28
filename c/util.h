@@ -58,14 +58,14 @@ public:
     ~delimiter();
     delimiter(const char* content = NULL, const bool copy = true);
 
-    void reset(const char* content, const bool copy = true);
+    void reset(const char* content = NULL, const bool copy = true);
     bool operator()(const char c) const;
 
 private:
     //disable copy/assign constructor
     delimiter(const delimiter&);
     delimiter& operator=(const delimiter&);
-    
+
 private:
     const char* _content;
     std::size_t _size;
