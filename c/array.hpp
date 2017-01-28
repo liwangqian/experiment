@@ -15,6 +15,7 @@
 
 #include <cstddef>
 #include <iomanip>
+#include <random>
 
 namespace snipts {
 
@@ -63,7 +64,16 @@ public:
     }
 
     template <typename ... Idx>
-    inline value_type operator()(const std::size_t i, Idx... j)
+    inline value_type& operator()(const std::size_t i, Idx... j)
+    {
+        static_assert(sizeof...(j) == sizeof...(Dn),
+                      "Array::operator()(i,j,...) -> Index is mismatch with Array dimension");
+
+        return _d[i](j...);
+    }
+
+    template <typename ... Idx>
+    inline value_type operator()(const std::size_t i, Idx... j) const
     {
         static_assert(sizeof...(j) == sizeof...(Dn),
                       "Array::operator()(i,j,...) -> Index is mismatch with Array dimension");
@@ -83,6 +93,7 @@ public:
             _d[i].fill(x);
         }
     }
+
 
 private:
     array_type _d[D0];
@@ -129,7 +140,12 @@ public:
         return _d[i];
     }
 
-    inline value_type operator()(const std::size_t i)
+    inline value_type& operator()(const std::size_t i)
+    {
+        return _d[i];
+    }
+
+    inline value_type operator()(const std::size_t i) const
     {
         return _d[i];
     }
@@ -186,6 +202,16 @@ OS& operator << (OS& os, const Array<T, D0, D1>& m)
 
     return os;
 }
+
+template <typename T, std::size_t N>
+inline void eye(Array<T, N, N>& m)
+{
+    for (std::size_t i = 0; i < N; ++i)
+    {
+        m(i,i) = T(1);
+    }
+}
+
 
 } //namespace snipts
 
