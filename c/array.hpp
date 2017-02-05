@@ -209,6 +209,10 @@ OS& operator << (OS& os, const Array<T, D0, D1>& m)
     return os;
 }
 
+
+namespace numeric {
+
+
 template <typename T, std::size_t N>
 inline void eye(Array<T, N, N>& m)
 {
@@ -225,6 +229,7 @@ inline void ones(Array<T, D0, Dn...>& m)
 }
 
 
+} //namespace numeric
 } //namespace snipts
 
 #endif // ARRAY_HPP_INCLUDED
