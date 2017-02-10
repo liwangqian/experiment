@@ -149,12 +149,12 @@ std::string formatter::parse_format_str()
 {
     const std::size_t nargs = _args.size();
     std::size_t         cnt = 0;
-    int                 idx = 0;
+    std::size_t         idx = 0;
     std::string result;
 
     for (std::size_t i = 0; i < _buf.size() - 1; ++i)
     {
-        idx = -1;
+        idx = 0;
         if ( _buf._content[i] == '%' && isdigit(_buf._content[i+1]))
         {
             cnt++;

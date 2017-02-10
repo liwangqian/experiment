@@ -278,6 +278,16 @@ OS& operator << (OS& os, const formatter& f)
     os << const_cast<formatter&>(f).c_str();
 }
 
+
+template <typename T>
+struct is_formatter_supported_type
+{
+    static const bool value = is_integer<T>::value ||
+                              is_float<T>::value   ||
+                              is_string<T>::value  ||
+                              is_pointer<T>::value;
+};
+
 /**
  *  implement for template functions
  *
