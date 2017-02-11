@@ -276,6 +276,7 @@ template <typename OS>
 OS& operator << (OS& os, const formatter& f)
 {
     os << const_cast<formatter&>(f).c_str();
+    return os;
 }
 
 

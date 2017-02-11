@@ -36,26 +36,38 @@ struct is_same : public false_type {};
 template <typename T>
 struct is_same<T, T> : public true_type {};
 
+//copy from c++11 possible implement
+//@ref http://en.cppreference.com/w/cpp/types/is_pointer
+template< typename T > struct remove_const          { typedef T type; };
+template< typename T > struct remove_const<const T> { typedef T type; };
+
+template< typename T > struct remove_volatile             { typedef T type; };
+template< typename T > struct remove_volatile<volatile T> { typedef T type; };
+
+template< typename T > struct remove_reference      { typedef T type; };
+template< typename T > struct remove_reference<T&>  { typedef T type; };
+template< typename T > struct remove_reference<T&&> { typedef T type; };
+
+template< typename T >
+struct remove_cv {
+    typedef typename remove_volatile<typename remove_const<T>::type>::type type;
+};
 
 template <typename T>
-struct is_integer : public false_type {};
-
-#define IS_INTEGER(type) \
-template <> \
-struct is_integer<type> : public true_type {};
-
-IS_INTEGER(char);
-IS_INTEGER(unsigned char);
-IS_INTEGER(short);
-IS_INTEGER(unsigned short);
-IS_INTEGER(int);
-IS_INTEGER(unsigned int);
-IS_INTEGER(long);
-IS_INTEGER(unsigned long);
-IS_INTEGER(long long);
-IS_INTEGER(unsigned long long);
-
-#undef IS_INTEGER
+struct is_integer
+{
+    typedef typename remove_cv<T>::type D;
+    static const bool value = is_same<D, char>::value           ||
+                              is_same<D, unsigned>::value       ||
+                              is_same<D, short>::value          ||
+                              is_same<D, unsigned>::value       ||
+                              is_same<D, int>::value            ||
+                              is_same<D, unsigned int>::value   ||
+                              is_same<D, long>::value           ||
+                              is_same<D, unsigned long>::value  ||
+                              is_same<D, long long>::value      ||
+                              is_same<D, unsigned long long>::value;
+};
 
 template <typename T>
 struct is_float : public false_type {};
@@ -81,23 +93,6 @@ struct is_numeric
     static const bool value = or_< or_<is_integer<T>, is_float<T> >,
                                    is_numeric_complex<T>
                                  >::value;
-};
-
-//copy from c++11 possible implement
-//@ref http://en.cppreference.com/w/cpp/types/is_pointer
-template< typename T > struct remove_const          { typedef T type; };
-template< typename T > struct remove_const<const T> { typedef T type; };
-
-template< typename T > struct remove_volatile             { typedef T type; };
-template< typename T > struct remove_volatile<volatile T> { typedef T type; };
-
-template< typename T > struct remove_reference      { typedef T type; };
-template< typename T > struct remove_reference<T&>  { typedef T type; };
-template< typename T > struct remove_reference<T&&> { typedef T type; };
-
-template< typename T >
-struct remove_cv {
-    typedef typename remove_volatile<typename remove_const<T>::type>::type type;
 };
 
 
