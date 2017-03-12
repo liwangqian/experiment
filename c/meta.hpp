@@ -15,7 +15,6 @@
 
 namespace snipts {
 
-
 template <bool cond, typename T1, typename T2>
 struct if_
 {

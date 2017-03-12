@@ -348,4 +348,3 @@ void sparse_matrix<eT, layout>::delete_zeros()
 }
 
 } //namespace snipts
-

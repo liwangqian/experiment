@@ -178,7 +178,7 @@ OS& operator << (OS& os, const Array<T, D0, Dn...>& m)
 {
     const std::size_t ndim = sizeof...(Dn);
 
-    //高维数组不支持打印
+    //锟斤拷维锟斤拷锟介不支锟街达拷印
     static_assert(ndim <= 2, "Array::operator<<() -> "
                   "print array which dimension larger than 3 is not supported");
 

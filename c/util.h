@@ -47,6 +47,9 @@ public:
         }
     }
 
+    char_buffer(const char_buffer& o) = default;
+    char_buffer& operator=(const char_buffer& o) = default;
+
     char_buffer(pointer content, const bool copy)
     : _content(NULL), _inner_buffer(NULL), _size(0)
     {

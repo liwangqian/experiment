@@ -55,7 +55,7 @@ void tokenizer::reset(const char* content, const bool copy)
 tokenizer::token tokenizer::next(const char delim)
 {
     const char* end = _buf._content + _buf.size();
-    token atoken = invalid_token;
+    token atoken    = invalid_token;
 
     strip(delim); // skip the delimiters
 
@@ -148,16 +148,13 @@ void formatter::reset(const char* format, const bool copy)
 std::string formatter::parse_format_str()
 {
     const std::size_t nargs = _args.size();
-    std::size_t         cnt = 0;
-    std::size_t         idx = 0;
     std::string result;
 
     for (std::size_t i = 0; i < _buf.size() - 1; ++i)
     {
-        idx = 0;
+        std::size_t idx = 0;
         if ( _buf._content[i] == '%' && isdigit(_buf._content[i+1]))
         {
-            cnt++;
             idx = atoi(_buf._content+i+1);
             while ( isdigit(_buf._content[++i]) ) /*nop*/ ;
 
