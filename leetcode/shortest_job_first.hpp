@@ -32,7 +32,7 @@ public:
         m_jobs.insert(
             /* ÉýÐò²åÈë */
             std::lower_bound(m_jobs.begin(), m_jobs.end(), newJob, [](const Job *a, const Job *b) {
-                return (a->startTime + a->spendTime) < (b->startTime + b->spendTime);
+                return a->spendTime < b->spendTime;
             }),
             newJob
         );
