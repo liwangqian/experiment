@@ -15,30 +15,30 @@
            -- 错误处理
            return ERR
        end
-    
+
        local ret, r1, r2 = DoAction01(...)
        if ret ~= OK then
            -- 错误处理
            ReleaseHandle(handle)
            return ERR
        end
-   
+
        -- 忽略部分代码...
-   
+
        if DoAction02(...) ~= OK then
            -- 错误处理
            ReleaseHandle(handle)
            return ERR
        end
-   
+
        -- 忽略部分代码...
-   
+
        if DoAction03(...) ~= OK then
            -- 错误处理
            ReleaseHandle(handle)
            return ERR
        end
-   
+
        -- 忽略部分代码...
        ReleaseHandle(handle)
        return OK
@@ -54,27 +54,27 @@
        if handle then return Success(handle) end
        return Failed(ERR, 'handle is nil')
    end
-   
+
    function DoAction01()
-   	-- ...
+    -- ...
        if ret == OK then
            return Success(r1, r2)
        else
-   		return Failed(ERR, 'DoAction01 failed')
+        return Failed(ERR, 'DoAction01 failed')
        end
    end
-   
+
    -- ...
-   
+
    function DoSomeActions()
        local handle = AllocateHandle()
        local result = When(NotNil(handle))
-       	:Then(function(rst) return DoAction01() end)
-      		:Then(function(rst) return DoAction02() end)
-       	:Then(function(rst) return DoAction03() end)
-       	:Catch(function(rst) log('error: {}, {}', rst.code, rst.desc) end)
-       	:Finally(function(rst) ReleaseHandle(handle) end)
-   
+        :Then(function(rst) return DoAction01() end)
+        :Then(function(rst) return DoAction02() end)
+        :Then(function(rst) return DoAction03() end)
+        :Catch(function(rst) log('error: {}, {}', rst.code, rst.desc) end)
+        :Finally(function(rst) ReleaseHandle(handle) end)
+
        return result:IsSuccess() and OK or ERR
    end
    ```
@@ -86,18 +86,18 @@
        print('Get somehting is ok')
        return Success(1,2,3)
    end
-   
+
    local function GetSomethingFailed()
        print('GetSomethingFailed is called')
        return Failed(-2, 'Get something failed with invalid param')
    end
-   
+
    local function ElseGetOtherthing()
        print('ElseGetOtherthing is called')
        local theThing = 123
        return Success(theThing)
    end
-   
+
    When(GetSomethingOk)
        :Then(function (rst)
            print('then #1 called', rst)
@@ -111,12 +111,12 @@
        :Catch(function (rst)
            print('Catched:', rst.code, rst.desc)
        end)
-   
+
    --[[ output
    Get somehting is ok
-   then #1 called	table: 0108A0D0
+   then #1 called   table: 0108A0D0
    GetSomethingFailed is called
-   Catched:	-2	Get something failed with invalid param
+   Catched: -2  Get something failed with invalid param
    --]]
    ```
 
@@ -133,13 +133,12 @@
        :Finally(function (rst)
            print('Finally: the thing is', unpack(rst.params))
        end)
-   
+
    --[[ output
    Get somehting is ok
    GetSomethingFailed is called
    ElseGetOtherthing is called
-   Finally: the thing is	123
+   Finally: the thing is    123
    --]]
    ```
 
-   
