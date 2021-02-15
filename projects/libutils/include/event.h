@@ -49,7 +49,8 @@ typedef struct EventObserver EventObserver;
  * @param event             事件类型
  * @param eventData         事件数据，可以为空
  * @param subscriberDate    订阅者订阅事件时提供的数据指针
- * @return bool             返回true则删除事件订阅，否则保留事件订阅
+ * @return true             删除事件订阅
+ * @return false            保留事件订阅
 */
 typedef bool(*EventCallback)(uint32_t event, void *eventData, void *listenerData);
 

@@ -44,13 +44,53 @@ typedef void *RCHandle;
 
 #define RCHANDLE_INVALID NULL
 
+/**
+ * @brief 创建一个引用计数对象。
+ *
+ * @param objSize       对象的字节大小
+ * @param allocator     对象的分配器
+ * @return RCHandle     成功则返回对象句柄，否则返回无效句柄RCHANDLE_INVALID
+ */
 RCHandle RefCountCreate(size_t objSize, IAllocator allocator);
 
+/**
+ * @brief 引用对象，调用该接口会增加对象的引用计数。
+ *
+ * @param handle        引用对象句柄
+ * @return RCHandle     新创建的引用对象，和handle指向同一个对象
+ */
 RCHandle RefCountRef(RCHandle handle);
+
+/**
+ * @brief 解引用对象，调用该接口会减少对象的引用计数。如果引用计数为1，则删除对象
+ *
+ * @param handle        引用对象句柄，如果对象被删除，句柄被置无效
+ */
 void RefCountUnref(RCHandle *handle);
 
+/**
+ * @brief 获取引用计数对象的引用计数
+ *
+ * @param handle        引用对象句柄
+ * @return uint32_t     对象当前的引用计数
+ */
 uint32_t RefCountGetCount(RCHandle handle);
+
+/**
+ * @brief 获取引用对象的数据指针
+ *
+ * @param handle        引用对象句柄
+ * @return void*        引用对象的数据指针，指向用户数据
+ */
 void *RefCountGetData(RCHandle handle);
+
+/**
+ * @brief 判断引用对象句柄是否有效
+ *
+ * @param handle        引用对象句柄
+ * @return true         对象有效
+ * @return false        对象无效
+ */
 bool RefCountIsValid(RCHandle handle);
 
 #ifdef __cplusplus
