@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021, LiWangQian. All rights reserved.
+ * Copyright (c) 2021, LiWangQian<liwangqian@huawei.com> All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without modification,
  * are permitted provided that the following conditions are met:
@@ -39,14 +39,29 @@ extern "C" {
 #endif
 
 typedef enum AllocatorOpType {
-    ALLOCATOR_REQUIRE_MEMORY,
-    ALLOCATOR_RELEASE_MEMORY,
-    ALLOCATOR_OBJ_CONSTRUCTOR,
-    ALLOCATOR_OBJ_DESTRUCTOR
+    ALLOCATOR_REQUIRE_MEMORY,  /* 申请对象内存 */
+    ALLOCATOR_RELEASE_MEMORY,  /* 释放对象内存 */
+    ALLOCATOR_OBJ_CONSTRUCTOR, /* 对象构造，发生在申请内存成功后 */
+    ALLOCATOR_OBJ_DESTRUCTOR   /* 对象析构，发生在释放内存前 */
 } AllocatorOpType;
 
+/**
+ * @brief 资源分配器接口.
+ *
+ * @param type      资源分配类型
+ * @param memSize   内存大小
+ * @param memPtr    内存指针，对于申请内存，保存申请的内存地址返回，对于其他场景，保存对象指针
+ */
 typedef void(*IAllocator)(AllocatorOpType type, size_t memSize, void **memPtr);
 
+/**
+ * @brief 资源分配器的默认实现，仅实现内存的申请和释放，不处理对象的构造和析构.
+ *
+ * @param type      资源分配类型
+ * @param memSize   内存大小
+ * @param memPtr    内存指针，对于申请内存操作，保存申请的内存地址返回；
+ *                  对于释放内存操作，携带内存地址
+ */
 void DefaultAllocator(AllocatorOpType type, size_t memSize, void **memPtr);
 
 #ifdef __cplusplus
