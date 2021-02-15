@@ -7,7 +7,17 @@ set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR}/bin)
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR}/lib)
 
-add_library(${PROJECT_NAME} SHARED src/refcount.c)
+set(THREADS_PREFER_PTHREAD_FLAG ON)
+find_package(Threads REQUIRED)
+
+set(PROJECT_SRC
+    src/refcount.c
+    src/event.c
+    src/allocator.c)
+
+add_library(${PROJECT_NAME} SHARED ${PROJECT_SRC})
+
 target_include_directories(${PROJECT_NAME} PRIVATE include)
+target_link_libraries(${PROJECT_NAME} PUBLIC Threads::Threads)
 
 add_subdirectory(test)
